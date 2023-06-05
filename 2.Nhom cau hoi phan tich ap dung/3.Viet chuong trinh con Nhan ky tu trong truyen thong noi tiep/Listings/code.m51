@@ -1,0 +1,95 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/31/2023  14:38:47  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL C\C51\BIN\BL51.EXE .\Objects\code.obj TO .\Objects\code PRINT (.\Listings\code.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\code.obj (CODE)
+  C:\KEIL C\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\code (CODE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000CH     UNIT         ?PR?UART_INIT?CODE
+            CODE    000FH     000CH     UNIT         ?C_C51STARTUP
+            CODE    001BH     000AH     UNIT         ?PR?MAIN?CODE
+            CODE    0025H     0008H     UNIT         ?PR?UART_RECEIVE?CODE
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\code (CODE)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?CODE
+
+?PR?MAIN?CODE
+  +--> ?PR?UART_INIT?CODE
+  +--> ?PR?UART_RECEIVE?CODE
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\code (CODE)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        CODE
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  B:0098H.0       PUBLIC        RI
+  C:001BH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  C:0003H         PUBLIC        UART_Init
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/31/2023  14:38:47  PAGE 2
+
+
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:008DH         PUBLIC        TH1
+  B:0088H.6       PUBLIC        TR1
+  C:0025H         PUBLIC        UART_Receive
+  -------         PROC          UART_INIT
+  C:0003H         LINE#         6
+  C:0003H         LINE#         7
+  C:0006H         LINE#         8
+  C:0009H         LINE#         9
+  C:000CH         LINE#         10
+  C:000EH         LINE#         11
+  -------         ENDPROC       UART_INIT
+  -------         PROC          UART_RECEIVE
+  C:0025H         LINE#         14
+  C:0025H         LINE#         15
+  C:0028H         LINE#         16
+  C:002AH         LINE#         17
+  C:002CH         LINE#         18
+  -------         ENDPROC       UART_RECEIVE
+  -------         PROC          MAIN
+  C:001BH         LINE#         27
+  C:001BH         LINE#         28
+  C:001EH         LINE#         29
+  C:001EH         LINE#         32
+  C:0023H         LINE#         33
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        CODE
+
+Program Size: data=9.0 xdata=0 code=45
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

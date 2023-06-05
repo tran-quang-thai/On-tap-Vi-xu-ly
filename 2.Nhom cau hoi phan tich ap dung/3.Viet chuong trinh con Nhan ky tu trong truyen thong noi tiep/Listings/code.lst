@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.0.0   CODE                                                              05/31/2023 14:38:45 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE CODE
+OBJECT MODULE PLACED IN .\Objects\code.obj
+COMPILER INVOKED BY: C:\Keil C\C51\BIN\C51.EXE code.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\code.
+                    -lst) TABS(3) OBJECT(.\Objects\code.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          // Crystal 11.0592MHz
+   3          //Virtual Terminal - BaudRate(9600) - Databits(8bit) - Stopbit(1) 
+   4          
+   5          // Cấu hình truyền thông nối tiếp
+   6          void UART_Init() {
+   7   1          TMOD |= 0x20;       // Cấu hình Timer 1 chế độ 8-bit tự động nạp lại
+   8   1          SCON = 0x50;        // Cấu hình UART: 8-bit truyền, không kiểm tra lỗi, truyền một chi�
+             -�u
+   9   1          TH1 = 0xFD;  // Thiết lập tốc độ baud rate cho 9600
+  10   1          TR1 = 1;            // Bật Timer 1
+  11   1      }
+  12          
+  13          // Nhận ký tự
+  14          char UART_Receive() {
+  15   1          while (!RI);        // Đợi cho đến khi nhận ký tự
+  16   1          RI = 0;             // Reset cờ nhận
+  17   1          return SBUF;        // Trả về ký tự nhận được
+  18   1      }
+  19          
+  20          //Bổ sung thêm hàm Truyền ký tự 
+  21          //void UART_Transmit(unsigned char c){
+  22          // SBUF=c;
+  23          // while(!TI);
+  24          // TI=0;
+  25          //}
+  26          
+  27          void main() {
+  28   1          UART_Init();    // Cấu hình truyền thông với baudrate 9600 bps
+  29   1          while (1) {
+  30   2             // Nhận ký tự từ truyền thông nối tiếp
+  31   2             // ví dụ hiển thị mã ascii của ký tự lên P2
+  32   2             P2=UART_Receive();
+  33   2          }
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     30    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
