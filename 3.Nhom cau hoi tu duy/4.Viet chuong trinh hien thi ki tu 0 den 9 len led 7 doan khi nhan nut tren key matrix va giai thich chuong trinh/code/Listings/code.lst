@@ -1,0 +1,93 @@
+C51 COMPILER V9.60.0.0   CODE                                                              06/02/2023 17:28:44 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE CODE
+OBJECT MODULE PLACED IN .\Objects\code.obj
+COMPILER INVOKED BY: C:\Keil C\C51\BIN\C51.EXE code.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\code.
+                    -lst) OBJECT(.\Objects\code.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          
+   3          sbit ROW1 = P1^0;
+   4          sbit ROW2 = P1^1;
+   5          sbit ROW3 = P1^2;
+   6          sbit ROW4 = P1^3;
+   7          sbit COL1 = P1^4;
+   8          sbit COL2 = P1^5;
+   9          sbit COL3 = P1^6;
+  10          sbit COL4 = P1^7;
+  11          
+  12          unsigned char key=0xFF;
+  13          unsigned char s[]={0x03, 0x9F, 0x25, 0x0D, 0x99, 0x49, 0x41, 0x1F, 0x01, 0x09};
+  14          
+  15          void delay(int t){
+  16   1          unsigned int i;
+  17   1          for(i=0;i<t;i++){
+  18   2              TMOD=0x01;
+  19   2              TH0=0xFC; //delay 1ms
+  20   2              TL0=0x18;
+  21   2              TR0=1;
+  22   2              while(!TF0);
+  23   2              TF0=0;
+  24   2              TR0=0;
+  25   2          }
+  26   1      }
+  27          
+  28          unsigned char Keypad_Read(){
+  29   1          unsigned char key = 0xFF;
+  30   1          ROW1=0;
+  31   1          if(!COL1) key='0'; // Clear
+  32   1          if(!COL2) key='1';
+  33   1          if(!COL3) key='2'; // =
+  34   1          if(!COL4) key='3'; // +
+  35   1          ROW1=1;
+  36   1          ROW2=0;
+  37   1          if(!COL1) key='4';
+  38   1          if(!COL2) key='5';
+  39   1          if(!COL3) key='6';
+  40   1          if(!COL4) key='7'; // -
+  41   1          ROW2=1;
+  42   1          ROW3=0;
+  43   1          if(!COL1) key='8';
+  44   1          if(!COL2) key='9';
+  45   1          if(!COL3) key='A';
+  46   1          if(!COL4) key='B'; // *
+  47   1          ROW3=1;
+  48   1          ROW4=0;
+  49   1          if(!COL1) key='C';
+  50   1          if(!COL2) key='D';
+  51   1          if(!COL3) key='E';
+  52   1          if(!COL4) key='F'; // "/"
+  53   1          ROW4=1;
+  54   1          return key;
+C51 COMPILER V9.60.0.0   CODE                                                              06/02/2023 17:28:44 PAGE 2   
+
+  55   1      }
+  56          
+  57          void main(){
+  58   1              unsigned char key;
+  59   1              P2=0xFF;
+  60   1              while(1){
+  61   2                      key=Keypad_Read();
+  62   2                      if(key!=0xFF){
+  63   3                              delay(250);
+  64   3                              P2=s[key-'0'];
+  65   3                      }
+  66   2              }
+  67   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    163    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

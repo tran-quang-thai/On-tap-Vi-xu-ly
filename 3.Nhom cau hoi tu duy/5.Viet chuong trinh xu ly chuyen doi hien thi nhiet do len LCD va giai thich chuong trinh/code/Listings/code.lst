@@ -1,0 +1,91 @@
+C51 COMPILER V9.60.0.0   CODE                                                              06/02/2023 18:26:55 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE CODE
+OBJECT MODULE PLACED IN .\Objects\code.obj
+COMPILER INVOKED BY: C:\Keil C\C51\BIN\C51.EXE code.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\code.
+                    -lst) OBJECT(.\Objects\code.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          sbit ADC_WR=P2^3;
+   3          sbit ADC_INTR=P2^4;
+   4          #define ADC_DATA P1
+   5          
+   6          sbit LCD_RS=P2^0;
+   7          sbit LCD_RW=P2^1;
+   8          sbit LCD_EN=P2^2;
+   9          #define LCD_DATA P3
+  10          
+  11          void delay(unsigned t){
+  12   1              unsigned int i;
+  13   1              TMOD=0x01;
+  14   1              for(i=0;i<t;i++){
+  15   2                      TH0=0xFC;
+  16   2                      TL0=0x18;
+  17   2                      TR0=1;
+  18   2                      while(!TF0);
+  19   2                      TF0=0;
+  20   2                      TR0=0;
+  21   2              }
+  22   1      }
+  23          unsigned char ADC_Read(){
+  24   1              unsigned char temp;
+  25   1              ADC_WR=0;
+  26   1              delay(100);
+  27   1              ADC_WR=1;
+  28   1              delay(100);
+  29   1              while(!ADC_INTR);
+  30   1              temp=ADC_DATA;
+  31   1              return temp;
+  32   1      }
+  33          
+  34          void LCD_Cmd(unsigned char cmd){
+  35   1              LCD_RS=0;
+  36   1              LCD_RW=0;
+  37   1              LCD_DATA=cmd;
+  38   1              LCD_EN=0;
+  39   1              delay(1);
+  40   1              LCD_EN=1;
+  41   1              delay(5);
+  42   1      }
+  43          
+  44          void LCD_Write(unsigned char Data){
+  45   1              LCD_RS=1;
+  46   1              LCD_RW=0;
+  47   1              LCD_DATA=Data;
+  48   1              LCD_EN=0;
+  49   1              delay(1);
+  50   1              LCD_EN=1;
+  51   1              delay(5);
+  52   1      }
+  53          void main(){
+  54   1              unsigned char temp;
+C51 COMPILER V9.60.0.0   CODE                                                              06/02/2023 18:26:55 PAGE 2   
+
+  55   1              LCD_Cmd(0x38);
+  56   1              LCD_Cmd(0x0C);
+  57   1              
+  58   1              while(1){
+  59   2                      temp=ADC_Read();
+  60   2                      temp=temp/0.512;
+  61   2                      LCD_Cmd(0x01);
+  62   2                      LCD_Write(temp/10+48);
+  63   2                      LCD_Write(temp%10+48);
+  64   2              }
+  65   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    158    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
